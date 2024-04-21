@@ -39,10 +39,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'Kruptorg.urls'
 
+TEMPLATES_DIR = BASE_DIR / 'templates'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,7 +89,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'asia/Novosibirsk'
+TIME_ZONE = 'Asia/Novosibirsk'
 
 USE_I18N = True
 
