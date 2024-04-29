@@ -9,9 +9,6 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 
-
-
-
 class IndexListView(ListView):
     paginate_by = 10
     model = Order
