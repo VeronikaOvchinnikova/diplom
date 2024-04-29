@@ -19,13 +19,13 @@ class Order(models.Model):
 
 
 class OrderList(models.Model):
-    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
-    name = models.CharField(max_length=200)
-    mass = models.DecimalField(max_digits=20, decimal_places=3)
-    count = models.IntegerField()
-    unit = models.CharField(max_length=20) #единица измерения
-    place = models.IntegerField()
-    unit_place = models.IntegerField() #штука-место
+    order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE, verbose_name='Номер заказа')
+    name = models.CharField(max_length=200, verbose_name='Наименование')
+    mass = models.DecimalField(max_digits=20, decimal_places=3, verbose_name='Масса НЕТТО')
+    count = models.IntegerField(verbose_name='Количество')
+    unit = models.CharField(max_length=20, verbose_name='Единица измерения')
+    place = models.IntegerField(verbose_name='Количество мест')
+    unit_place = models.IntegerField(verbose_name='Штука/место')
 
     class Meta:
         verbose_name = 'Состав заказа'
