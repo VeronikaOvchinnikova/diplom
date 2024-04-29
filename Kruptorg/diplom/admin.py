@@ -3,6 +3,8 @@ from .models import Order, OrderList
 
 
 admin.site.empty_value_display = 'не задано'
+
+
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = (
@@ -24,8 +26,11 @@ class OrderAdmin(admin.ModelAdmin):
         'date',
         'status'
     )
+
+
 class OrderInline(admin.TabularInline):
     model = Order
+
 
 @admin.register(OrderList)
 class OrderListAdmin(admin.ModelAdmin):
@@ -48,6 +53,8 @@ class OrderListAdmin(admin.ModelAdmin):
     list_filter = (
         'name',
     )
+
+
 class OrderListInline(admin.TabularInline):
     model = OrderList
 

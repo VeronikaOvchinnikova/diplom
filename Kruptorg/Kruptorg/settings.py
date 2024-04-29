@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'debug_toolbar',
     'djoser',
-    'diplom'
+    'diplom',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -96,7 +97,6 @@ TIME_ZONE = 'Asia/Novosibirsk'
 USE_I18N = True
 
 USE_TZ = True
-
 
 
 STATIC_URL = 'static/'

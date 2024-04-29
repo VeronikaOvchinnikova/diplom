@@ -1,18 +1,18 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from .models import OrderList, Order
-from .serializers import OrderSerializer
-from django.http import Http404
-from django.shortcuts import get_object_or_404, redirect
+from django.http import Http404, HttpResponse, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
+
+from .models import Order, OrderList
+from api.serializers import OrderSerializer
 
 
 class IndexListView(ListView):
     paginate_by = 10
     model = Order
     template_name = 'index.html'
+
     @action(
         methods=['POST', 'PATCH'],
         detail=False,
@@ -21,6 +21,7 @@ class IndexListView(ListView):
         url_name='add_order'
     )
     def add_order(self, request):
+        pass
 
 
 
