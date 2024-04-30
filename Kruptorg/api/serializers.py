@@ -21,6 +21,10 @@ class OrderSerializer(serializers.ModelSerializer):
         if order:
             raise serializers.ValidationError('Не может быть двух заказов с одним номером')
         return order
+    # def to_representation(self, instance):
+    #     representation = super().to_representation(instance)
+    #     representation['date'] = instance.date.strftime("%d-%m-%Y")
+    #     return representation
 
 
 

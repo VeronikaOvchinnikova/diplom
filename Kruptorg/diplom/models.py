@@ -1,19 +1,29 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
+ROLE_CHOICES = (
+    ('Cladovchik', 'Кладовщик'),
+    ('Manager', 'Менеджер')
+)
+
+STATUS_CHOICES = (
+    ('POstupil', 'Поступил'),
+    ('Prinyat', 'Принят')
+)
 
 class Order(models.Model):
     """Модель заказа."""
     order_number = models.CharField(max_length=30,
                                     verbose_name='Номер заказа',
-                                    unique=True)  #NOT null?
-    date = models.DateTimeField(verbose_name='Дата отгрузки')
+                                    unique=True)
+    date = models.DateField(verbose_name='Дата отгрузки', blank=True)
     status = models.CharField(max_length=30,
-                              verbose_name='Статус')  #по дефолту "Принят"
+                              verbose_name='Статус', default='Поступил', choices=STATUS_CHOICES)
     car_number = models.CharField(max_length=30,
-                                  verbose_name='Номер машины')
+                                  verbose_name='Номер машины', blank=True)
     trailer_number = models.CharField(max_length=30,
                                       blank=True,
-                                      verbose_name='Номер прицепа')  #номер прицепа
+                                      verbose_name='Номер прицепа')
     places = models.IntegerField(verbose_name='Количество мест всего')
     names = models.IntegerField(verbose_name='Кол-во наименований')
 
@@ -48,4 +58,22 @@ class OrderList(models.Model):
         verbose_name_plural = 'Составы заказов'
 
     def __str__(self):
-        return self.order
+        return self.name
+
+
+class User (AbstractUser):
+    login = models.CharField(max_length=50)
+    password = models.CharField(max_length=50)
+    name = models.CharField(max_length=100)
+    role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def is_cladovchik(self):
+        return self.role=='Cladovchik'
+
+    @property
+    def is_manager(self):
+        return self.role == 'Manager'
