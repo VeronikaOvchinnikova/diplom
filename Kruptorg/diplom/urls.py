@@ -1,9 +1,10 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+
+from .views import IndexListView
 
 
-app_name = 'diplom'
+
 urlpatterns = [
-    path('', views.IndexListView.as_view(), name = 'main_page'),
-    path('<slug:category>/', views.index2)
+    path('', IndexListView.as_view(), name='main_page',),
 ]
