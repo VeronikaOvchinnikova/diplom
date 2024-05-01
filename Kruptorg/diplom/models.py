@@ -2,14 +2,22 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 ROLE_CHOICES = (
-    ('Cladovchik', 'Кладовщик'),
+    ('Storekeeper', 'Кладовщик'),
     ('Manager', 'Менеджер')
 )
 
 STATUS_CHOICES = (
-    ('POstupil', 'Поступил'),
-    ('Prinyat', 'Принят')
+    ('Entered', 'Поступил'),
+    ('Accepted', 'Принят'),
+    ('Assembly', 'В сборке'),
+    ('Awaiting shipment', 'Ожидает отгрузки'),
+    ('Is shipped', 'Отгружается'),
+    ('Shipped', 'Отгружен'),
+    ('Canceled', 'Отменен'),
+    ('Changed', 'Изменен'),
+    ('Has problem', 'Возникла проблема')
 )
+
 
 class Order(models.Model):
     """Модель заказа."""
@@ -71,8 +79,8 @@ class User (AbstractUser):
         return self.name
 
     @property
-    def is_cladovchik(self):
-        return self.role=='Cladovchik'
+    def is_storekeeper(self):
+        return self.role == 'Storekeeper'
 
     @property
     def is_manager(self):

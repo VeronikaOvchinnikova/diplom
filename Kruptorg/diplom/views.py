@@ -24,5 +24,25 @@ class IndexListView(ListView):
         pass
 
 
+def page_not_found(request, exception):
+    template = 'pages/404.html'
+    return render(request, template, status=404)
+
+
+def server_error(request):
+    template = 'pages/500.html'
+    return render(request, template, status=500)
+
+
+def csrf_failure(request, reason=''):
+    template = 'pages/403_csrf.html'
+    return render(request, template, status=403)
+
+
+def login(request):
+    template = 'pages/login.html'
+    return render(request, template)
+
+
 
 

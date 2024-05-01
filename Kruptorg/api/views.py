@@ -27,20 +27,18 @@ class AddOrderView(viewsets.GenericViewSet):
             status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
 class AddOrderListView(viewsets.GenericViewSet):
     @action(detail=False, methods=['POST'], permission_classes=[AllowAny])
     def add_order_list(self, request):
-        order_number=request.data.get('order_number')
+        order_number = request.data.get('order_number')
         if not order_number:
             return Response({
                 'status': 'Error occured',
                 'errors': 'order_number is required'
             },
                 status=status.HTTP_400_BAD_REQUEST)
-        order=get_object_or_404(Order, order_number=order_number)
-        items=request.data.get('items')
+        order = get_object_or_404(Order, order_number=order_number)
+        items = request.data.get('items')
         if not items:
             return Response({
                 'status': 'Error occured',
@@ -48,15 +46,15 @@ class AddOrderListView(viewsets.GenericViewSet):
             },
                 status=status.HTTP_400_BAD_REQUEST)
         for item in items:
-            item_name=item.get('name')
-            item_object=OrderList.objects.filter(order=order, name=item_name).first()
+            item_name = item.get('name')
+            item_object = OrderList.objects.filter(order=order, name=item_name).first()
             if item_object:
                 for key, value in item.items():
                     setattr(item_object, key, value)
                 item_object.save()
             else:
-                item['order']=order.id
-                serializer=OrderListSerializer(data=item)
+                item['order'] = order.id
+                serializer = OrderListSerializer(data=item)
                 if serializer.is_valid():
                     serializer.save()
                 else:
@@ -65,7 +63,7 @@ class AddOrderListView(viewsets.GenericViewSet):
                         'errors': serializer.errors
                     },
                         status=status.HTTP_400_BAD_REQUEST)
-        return Response ({
+        return Response({
             'status': f'Items added to order {order.order_number}'
         },
                         status=status.HTTP_201_CREATED)

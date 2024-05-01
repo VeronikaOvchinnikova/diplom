@@ -1,9 +1,12 @@
 {% load static %}
-{% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="icon" href="{% static 'img/agromaster_logo.png' %}" type="image">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>

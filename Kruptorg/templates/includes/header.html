@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% load static %}
+{% extends "base.html" %}
+{% block content %}
+<div class="header">
+    <div class="d-inline-block align-top"><img src="{% static 'img/agromaster_logo.png' %}" width="152" height="88"></div>
+    <button class="archive_button">Архив</button>
+    <div class="profile_logo"><img src="{% static 'img/icon.png' %}" width="50" height="50"></div>
+    <button class="logout_button">Выйти</button>
+</div>
+{% endblock %}

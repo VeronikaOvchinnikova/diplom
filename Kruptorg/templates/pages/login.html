@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}
+Страница авторизации
+{% endblock %}
+{% block content %}
+<div class="login_container">
+<div class="login_box"><h1>ВХОД</h1> </div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <label for="username">ЛОГИН</label>
+            <input type="text" name="username" id="username" required>
+        </div>
+        <div class="input-group">
+            <label for="password">ПАРОЛЬ</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        <div class="form_footer">
+            <a href="vk.com">Забыли свой пароль?</a>
+            <button type="submit" class="login_button">ВОЙТИ</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_bootstrap5',
     'debug_toolbar',
     'djoser',
     'diplom',
@@ -112,6 +113,14 @@ REST_FRAMEWORK = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = ''
+
+LOGIN_URL = ''
+
+CSRF_FAILURE_VIEW = 'diplom.views.csrf_failure'
+
+AUTH_USER_MODEL = 'diplom.User'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),

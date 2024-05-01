@@ -3,6 +3,10 @@ from django.urls import path, include
 from django.conf import settings
 
 
+handler404='diplom.views.page_not_found'
+
+handler500='diplom.views.server_error'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/', include("api.urls")),
