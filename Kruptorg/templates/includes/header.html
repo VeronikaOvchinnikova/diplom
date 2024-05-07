@@ -1,9 +1,18 @@
 {% load static %}
 {% block content %}
-<div class="header">
-    <div class="d-inline-block align-top"><img src="{% static 'img/agromaster_logo.png' %}" width="152" height="88"></div>
-    <button class="archive_button">Архив</button>
-    <div class="profile_logo"><img src="{% static 'img/icon.png' %}" width="50" height="50"></div>
-    <button class="logout_button">Выйти</button>
+<style>header{
+            background: #63EA99;
+            }
+</style>
+<div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+        <a href="{% url 'diplom:main_page' 1 %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <img src="{% static 'img/agromaster_logo.png' %}" width="152" height="88">
+        </a>
+     <ul class="nav nav-pills">
+         <li class="nav-item"><a href="{% url 'diplom:main_page' 1 %}" class="nav-link">Архив</a></li>
+         <li class="nav-item"><a href="{% url 'diplom:logout' %}" class="nav-link">Выйти</a></li>
+     </ul>
+    </header>
 </div>
 {% endblock %}

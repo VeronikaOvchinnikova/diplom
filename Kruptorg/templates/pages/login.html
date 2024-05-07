@@ -8,6 +8,14 @@
     {% bootstrap_javascript %}
     <link rel="shortcut icon" href="{% static 'img/agromaster_logo.png' %}" type="image">
     <title>Страница авторизации</title>
+    <style>body{
+            background: linear-gradient(306.04deg, #63EA99 72.64%, rgba(215, 255, 231, 0) 112.22%);
+            height: 100vh;
+            margin: 0;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            }
+    </style>
 </head>
 <body>
 <main>
@@ -18,7 +26,7 @@
         ВХОД
     </div>
     <div class="card-body">
-        <form method="post" action="{% url 'diplom:login_request' %}">
+        <form method="post" action="{% url 'diplom:login' %}">
             {% csrf_token %}
             {% bootstrap_form form %}
             <input type="hidden" name="next" value="{{ next }}">

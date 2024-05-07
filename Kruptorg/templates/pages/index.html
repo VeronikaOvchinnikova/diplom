@@ -1,7 +1,94 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Заказы{% endblock %}
 {% block content %}
-<h1>№ Заказа, Дата отгрузки, Статус, Номер машины, Номер прицепа, Кол-во мест, Кол-во наименований</h1>
+<div class="container">
+    <div class="row align-items-start">
+    <div class="col"><b>№ Заказа</b> <img src="{% static 'img/filter.png' %}" width="20" height="18">
+    <div data-bs-theme="light" class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px">
+        <form class="p-2 mb-2 bg-body-tertiary border-bottom">
+            <input type="search" class="form-control" autocomplete="false" placeholder="поиск">
+            <img src="{% static 'img/search.png' %}" width="24" height="24">
+        </form>
+        <ul class="list-unstyled mb-0">
+            <li><a class="dropdown-item d-flex align-items-center gap-2 py-2">Сортировать
+            <img src="{% static 'img/a-z.png' %}" width="24" height="24">
+            </a></li>
+            <li><a class="dropdown-item d-flex align-items-center gap-2 py-2">Сортировать
+            <img src="{% static 'img/z-a.png' %}" width="24" height="24">
+            </a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="col"><b>Дата отгрузки</b> <img src="{% static 'img/filter.png' %}" width="20" height="18">
+    <div data-bs-theme="light" class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px">
+         <form class="p-2 mb-2 bg-body-tertiary border-bottom">
+            <input type="search" class="form-control" autocomplete="false" placeholder="поиск">
+             <img src="{% static 'img/search.png' %}" width="24" height="24">
+        </form>
+        <ul class="list-unstyled mb-0">
+            <li><a class="dropdown-item d-flex align-items-center gap-2 py-2">Сортировать
+            <img src="{% static 'img/a-z.png' %}" width="24" height="24">
+            </a></li>
+            <li><a class="dropdown-item d-flex align-items-center gap-2 py-2">Сортировать
+            <img src="{% static 'img/z-a.png' %}" width="24" height="24">
+            </a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item d-flex align-items-center gap-2 py-2">Сегодня</a></li>
+            <li><a class="dropdown-item d-flex align-items-center gap-2 py-2">Завтра</a></li>
+        </ul>
+    </div>
+    </div>
+    <div class="col"><b>Статус</b> <img src="{% static 'img/filter.png' %}" width="20" height="18">
+    <div data-bs-theme="light" class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked0">
+            <label class="form-check-label" for="flexCheckChecked1">Поступил</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked1">
+            <label class="form-check-label" for="flexCheckChecked1">Принят</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked2">
+            <label class="form-check-label" for="flexCheckChecked2">В сборке</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked3">
+            <label class="form-check-label" for="flexCheckChecked3">Ожидает отгрузки</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked4">
+            <label class="form-check-label" for="flexCheckChecked4">Отгружается</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5">
+            <label class="form-check-label" for="flexCheckChecked5">ВОзникла проблема</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked6">
+            <label class="form-check-label" for="flexCheckChecked6">Изменен</label>
+        </div>
+
+    </div>
+    </div>
+    <div class="col" width="100"><b>Номер машины</b> <img src="{% static 'img/filter.png' %}" width="20" height="18">
+    <div data-bs-theme="light" class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px">
+        <form class="p-2 mb-2 bg-body-tertiary border-bottom">
+            <input type="search" class="form-control" autocomplete="false" placeholder="поиск">
+            <img src="{% static 'img/search.png' %}" width="24" height="24">
+        </form>
+    </div>
+    </div>
+    <div class="col"><b>Номер прицепа</b></div>
+    <div class="col"><b>Кол-во мест</b></div>
+    <div class="col"><b>Кол-во наименований</b></div>
+    </div>
+</div>
+<hr>
+
+
+
 <!--{% for order_card in order_cards %}-->
 <!--<article class="mb-5">-->
 <!--{% include 'includes/order_card.html' %}-->

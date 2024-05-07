@@ -6,6 +6,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import login, authenticate, logout
 
 from .models import Order, OrderList
 from api.serializers import OrderSerializer
@@ -13,21 +14,12 @@ from api.serializers import OrderSerializer
 
 class IndexListView(ListView, LoginRequiredMixin):
     paginate_by = 10
+    pk_url_kwarg = 'order_pk'
     model = Order
-    template_name = 'index.html'
-
-    @action(
-        methods=['POST', 'PATCH'],
-        detail=False,
-        permission_classes=(IsAuthenticated, ),
-        url_path='add_order',
-        url_name='add_order'
-    )
-    def add_order(self, request):
-        pass
+    template_name = 'pages/index.html'
 
     def get_queryset(self):
-        return self.model.objects.get(
+        return self.model.objects.select_related(
             'order_number',
             'date',
             'status',
@@ -59,14 +51,39 @@ def csrf_failure(request, reason=''):
     return render(request, template, status=403)
 
 
-def login(request):
+def login_view(request):
     template = 'pages/login.html'
-    form = AuthenticationForm()
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                return redirect('diplom:main_page')
+    else:
+        form = AuthenticationForm()
     return render(request, template, {'form':form})
 
 
-def login_request(request):
-    return JsonResponse({'status':'OK'})
+# def login(request):
+#     template = 'pages/login.html'
+#     if request.method == 'POST':
+#         form = AuthenticationForm(request, data=request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             login(request, user)
+#             return redirect('diplom:main_page')
+#     else:
+#         form = AuthenticationForm()
+#     return render(request, template, {'form':form})
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('diplom:login')
 
 
 
