@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 
 ROLE_CHOICES = (
     ('Storekeeper', 'Кладовщик'),
@@ -69,19 +70,21 @@ class OrderList(models.Model):
         return self.name
 
 
-class User (AbstractUser):
-    login = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
-    name = models.CharField(max_length=100)
-    role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+# class User (AbstractUser):
+#     login = models.CharField(max_length=50)
+#     password = models.CharField(max_length=50)
+#     name = models.CharField(max_length=100)
+#     role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+#
+#     def __str__(self):
+#         return self.name
+#
+#     @property
+#     def is_storekeeper(self):
+#         return self.role == 'Storekeeper'
+#
+#     @property
+#     def is_manager(self):
+#         return self.role == 'Manager'
 
-    def __str__(self):
-        return self.name
-
-    @property
-    def is_storekeeper(self):
-        return self.role == 'Storekeeper'
-
-    @property
-    def is_manager(self):
-        return self.role == 'Manager'
+User = get_user_model()

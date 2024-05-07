@@ -1,24 +1,32 @@
-{% extends "base.html" %}
-{% block title %}
-Страница авторизации
-{% endblock %}
-{% block content %}
-<div class="login_container">
-<div class="login_box"><h1>ВХОД</h1> </div>
-    <form method="post">
-        {% csrf_token %}
-        <div class="input-group">
-            <label for="username">ЛОГИН</label>
-            <input type="text" name="username" id="username" required>
-        </div>
-        <div class="input-group">
-            <label for="password">ПАРОЛЬ</label>
-            <input type="password" name="password" id="password" required>
-        </div>
-        <div class="form_footer">
-            <a href="vk.com">Забыли свой пароль?</a>
-            <button type="submit" class="login_button">ВОЙТИ</button>
-        </div>
-    </form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="shortcut icon" href="{% static 'img/agromaster_logo.png' %}" type="image">
+    <title>Страница авторизации</title>
+</head>
+<body>
+<main>
+<div class="col d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="card" style="width: 40rem;">
+
+    <div class="card-header">
+        ВХОД
+    </div>
+    <div class="card-body">
+        <form method="post" action="{% url 'diplom:login_request' %}">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {% bootstrap_button button_type="submit" content="ВОЙТИ" %}
+        </form>
+    </div>
 </div>
-{% endblock %}
+</div>
+</main>
+</body>
+</html>

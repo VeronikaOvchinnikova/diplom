@@ -11,7 +11,7 @@ SECRET_KEY = get_random_secret_key()
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -90,7 +90,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-
 LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'Asia/Novosibirsk'
@@ -98,7 +97,6 @@ TIME_ZONE = 'Asia/Novosibirsk'
 USE_I18N = True
 
 USE_TZ = True
-
 
 
 STATIC_URL = 'static/'
@@ -114,13 +112,15 @@ REST_FRAMEWORK = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = ''
+LOGIN_REDIRECT_URL = 'diplom:index'
 
-LOGIN_URL = ''
+LOGIN_URL = 'diplom:login'
 
 CSRF_FAILURE_VIEW = 'diplom.views.csrf_failure'
 
-AUTH_USER_MODEL = 'diplom.User'
+#AUTH_USER_MODEL = 'diplom.User'
+
+STATICFILES_DIRS = ((BASE_DIR / 'static/'),)
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
