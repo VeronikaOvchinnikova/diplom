@@ -17,23 +17,40 @@ class IndexListView(ListView, LoginRequiredMixin):
     pk_url_kwarg = 'order_pk'
     model = Order
     template_name = 'pages/index.html'
+    context_object_name = 'orders'
 
     def get_queryset(self):
-        return self.model.objects.select_related(
-            'order_number',
-            'date',
-            'status',
-            'car_number',
-            'trailer_number',
-            'places',
-            'names').filter(status__in=[
+        # return self.model.objects.select_related(
+        #     'order_number',
+        #     'date',
+        #     'status',
+        #     'car_number',
+        #     'trailer_number',
+        #     'places',
+        #     'names').
+        #     filter(status__in=[
+
+        return self.model.objects.filter(status__in=[
             'Entered',
             'Accepted',
             'Assembly',
             'Awaiting shipment',
             'Is shipped',
             'Changed',
-            'Has problem']).annotate(orders_count=Count('order_number')).order_by('-date')
+            'Has problem']).prefetch_related('items').all()
+
+
+class ArchiveListView(ListView, LoginRequiredMixin):
+    paginate_by = 10
+    pk_url_kwarg = 'order_pk'
+    model = Order
+    template_name = 'pages/index.html'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        return self.model.objects.filter(status__in=[
+            'Canceled',
+            'Shipped']).prefetch_related('items').all()
 
 
 def page_not_found(request, exception):

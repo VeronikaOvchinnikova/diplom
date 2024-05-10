@@ -4,8 +4,11 @@
 {% block content %}
 <div class="container">
     <div class="row align-items-start">
-    <div class="col"><b>№ Заказа</b> <img src="{% static 'img/filter.png' %}" width="20" height="18">
-    <div data-bs-theme="light" class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px">
+        <div class="col"><b>№ Заказа</b>
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{% static 'img/filter.png' %}" width="20" height="18">
+            </button>
+        <div data-bs-theme="light" class="dropdown-menu">
         <form class="p-2 mb-2 bg-body-tertiary border-bottom">
             <input type="search" class="form-control" autocomplete="false" placeholder="поиск">
             <img src="{% static 'img/search.png' %}" width="24" height="24">
@@ -18,10 +21,13 @@
             <img src="{% static 'img/z-a.png' %}" width="24" height="24">
             </a></li>
         </ul>
-    </div>
-    </div>
-    <div class="col"><b>Дата отгрузки</b> <img src="{% static 'img/filter.png' %}" width="20" height="18">
-    <div data-bs-theme="light" class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px">
+        </div>
+        </div>
+        <div class="col"><b>Дата отгрузки</b>
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="{% static 'img/filter.png' %}" width="20" height="18">
+            </button>
+        <div data-bs-theme="light" class="dropdown-menu">
          <form class="p-2 mb-2 bg-body-tertiary border-bottom">
             <input type="search" class="form-control" autocomplete="false" placeholder="поиск">
              <img src="{% static 'img/search.png' %}" width="24" height="24">
@@ -39,8 +45,11 @@
         </ul>
     </div>
     </div>
-    <div class="col"><b>Статус</b> <img src="{% static 'img/filter.png' %}" width="20" height="18">
-    <div data-bs-theme="light" class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px">
+    <div class="col"><b>Статус</b>
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{% static 'img/filter.png' %}" width="20" height="18">
+        </button>
+        <div data-bs-theme="light" class="dropdown-menu">
         <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked0">
             <label class="form-check-label" for="flexCheckChecked1">Поступил</label>
@@ -63,7 +72,7 @@
         </div>
         <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked5">
-            <label class="form-check-label" for="flexCheckChecked5">ВОзникла проблема</label>
+            <label class="form-check-label" for="flexCheckChecked5">Возникла проблема</label>
         </div>
         <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked6">
@@ -72,8 +81,12 @@
 
     </div>
     </div>
-    <div class="col" width="100"><b>Номер машины</b> <img src="{% static 'img/filter.png' %}" width="20" height="18">
-    <div data-bs-theme="light" class="dropdown-menu d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px">
+
+    <div class="col"><b>Номер машины</b>
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="{% static 'img/filter.png' %}" width="20" height="18">
+        </button>
+    <div data-bs-theme="light" class="dropdown-menu">
         <form class="p-2 mb-2 bg-body-tertiary border-bottom">
             <input type="search" class="form-control" autocomplete="false" placeholder="поиск">
             <img src="{% static 'img/search.png' %}" width="24" height="24">
@@ -84,8 +97,73 @@
     <div class="col"><b>Кол-во мест</b></div>
     <div class="col"><b>Кол-во наименований</b></div>
     </div>
-</div>
+
 <hr>
+
+
+{% for order_item in orders %}
+<div class="card" style="background: #9EFEC3">
+    <div class="card-body">
+        <div class="row align-items-start">
+            <div class="col">
+                {{order_item.order_number}}
+            </div>
+            <div class="col">
+                {{order_item.date}}
+            </div>
+            <div class="col">
+                {{order_item.status}}
+                <button>
+                   <img src="{% static 'img/change_status.png' %}" width="24" height="24">
+               </button>
+            </div>
+            <div class="col">
+                {{order_item.car_number}}
+            </div>
+            <div class="col">
+                {{order_item.trailer_number}}
+            </div>v
+            <div class="col">
+                {{order_item.places}}
+            </div>
+            <div class="col">
+                {{order_item.names}}
+                <button>
+                   <img src="{% static 'img/dropdown_table.png' %}" width="20" height="8">
+               </button>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>№</th>
+        <th>Наименование товара</th>
+        <th>Масса НЕТТО</th>
+        <th>Количество</th>
+        <th>Ед.изм</th>
+        <th>Кол-во мест</th>
+        <th>Шт/место</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for list_item in order_item.items.all %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{list_item.name}}</td>
+            <td>{{list_item.mass}}</td>
+            <td>{{list_item.count}}</td>
+            <td>{{list_item.unit}}</td>
+            <td>{{list_item.place}}</td>
+            <td>{{list_item.unit_place}}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
+
+</div>
 
 
 
@@ -93,6 +171,6 @@
 <!--<article class="mb-5">-->
 <!--{% include 'includes/order_card.html' %}-->
 <!--</article>-->
-<!--{% endfor %}-->
-<!--{% include 'includes/paginator.html' %}-->
-<!--{% endblock %}-->
+<!--{% endfor %} d-block position-static pt-0 mx-0 rounded-3 shadow overflow-hidden w-280px-->
+{% include 'includes/paginator.html' %}
+{% endblock %}
