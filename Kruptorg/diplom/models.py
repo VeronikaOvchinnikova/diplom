@@ -34,7 +34,7 @@ class Order(models.Model):
                                       blank=True,
                                       verbose_name='Номер прицепа')
     places = models.IntegerField(verbose_name='Количество мест всего')
-    names = models.IntegerField(verbose_name='Кол-во наименований')
+    names = models.IntegerField(verbose_name='Количество наименований')
 
     class Meta:
         verbose_name = 'Заказ'

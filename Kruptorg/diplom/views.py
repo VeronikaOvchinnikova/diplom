@@ -7,6 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate, logout
+from django.utils import timezone
 
 from .models import Order, OrderList
 from api.serializers import OrderSerializer
@@ -20,16 +21,6 @@ class IndexListView(ListView, LoginRequiredMixin):
     context_object_name = 'orders'
 
     def get_queryset(self):
-        # return self.model.objects.select_related(
-        #     'order_number',
-        #     'date',
-        #     'status',
-        #     'car_number',
-        #     'trailer_number',
-        #     'places',
-        #     'names').
-        #     filter(status__in=[
-
         return self.model.objects.filter(status__in=[
             'Entered',
             'Accepted',
@@ -38,6 +29,12 @@ class IndexListView(ListView, LoginRequiredMixin):
             'Is shipped',
             'Changed',
             'Has problem']).prefetch_related('items').all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        today = timezone.now().date()
+        context['today_orders_count'] = self.model.objects.filter(date=today).count()
+        context['changes_order_count'] = self.model.objects.filter(status='Changed').count()
+        return context
 
 
 class ArchiveListView(ListView, LoginRequiredMixin):

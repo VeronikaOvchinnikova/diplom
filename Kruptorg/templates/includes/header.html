@@ -9,25 +9,27 @@
             border: none;
             }
 </style>
-<div class="container">
+<style>a{
+           text-decoration: none;
+            }
+</style>
+<div class="container-fluid p-0 m-0" style="box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.5)">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a href="{% url 'diplom:main_page' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-            <img src="{% static 'img/agromaster_logo.png' %}" width="124" height="60">
+        <a href="{% url 'diplom:main_page' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none" style="margin-left: 80px">
+            <img src="{% static 'img/agromaster_logo.png' %}" width="124" height="60" class="m-2">
         </a>
      <ul class="nav nav-pills">
-<!--         <li class="nav-item"><a href="{% url 'diplom:main_page' %}" class="nav-link">Архив</a></li>-->
-<!--         <li class="nav-item"><a href="{% url 'diplom:logout' %}" class="nav-link">Выйти</a></li>-->
          <li>
-             <button style="border: 2px solid #FFFFFF">
-                 <a href="{% url 'diplom:archive' %}">Архив  <img src="{% static 'img/archive.png' %}" width="24" height="24"></a>
+             <button style="border: 2px solid #FFFFFF; box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.45);" class="btn btn-outline-secondary d-inline-flex align-items-center m-1">
+                 <a class="text-white" href="{% url 'diplom:archive' %}">Архив  <img src="{% static 'img/archive.png' %}" width="24" height="24"></a>
              </button>
          </li>
          <li>
-             <img src="{% static 'img/icon.png' %}" width="30" height="30">
+             <img src="{% static 'img/icon.png' %}" width="50" height="50">
          </li>
          <li>
-             <button style="border: 2px solid #FFFFFF">
-                 <a href="{% url 'diplom:logout' %}">Выйти  <img src="{% static 'img/logout.png' %}" width="24" height="24"></a>
+             <button style="border: 2px solid #FFFFFF; box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.45);" class="btn btn-outline-secondary d-inline-flex align-items-center m-1">
+                 <a class="text-white" href="{% url 'diplom:logout' %}">Выйти  <img src="{% static 'img/logout.png' %}" width="24" height="24"></a>
              </button>
          </li>
      </ul>
