@@ -8,17 +8,19 @@ ROLE_CHOICES = (
 )
 
 STATUS_CHOICES = (
-    ('Entered', 'Поступил'),
-    ('Accepted', 'Принят'),
-    ('Assembly', 'В сборке'),
-    ('Awaiting shipment', 'Ожидает отгрузки'),
-    ('Is shipped', 'Отгружается'),
-    ('Shipped', 'Отгружен'),
-    ('Canceled', 'Отменен'),
-    ('Changed', 'Изменен'),
-    ('Has problem', 'Возникла проблема')
+    ('Поступил', 'Поступил'),
+    ('Принят', 'Принят'),
+    ('В сборке', 'В сборке'),
+    ('Ожидает отгрузки', 'Ожидает отгрузки'),
+    ('Отгружается', 'Отгружается'),
+    ('Отгружен', 'Отгружен'),
+    ('Отменен', 'Отменен'),
+    ('Изменен', 'Изменен'),
+    ('Возникла проблема', 'Возникла проблема')
 )
 
+
+User = get_user_model()
 
 class Order(models.Model):
     """Модель заказа."""
@@ -87,4 +89,17 @@ class OrderList(models.Model):
 #     def is_manager(self):
 #         return self.role == 'Manager'
 
-User = get_user_model()
+
+class Comments (models.Model):
+    text = models.TextField(max_length=500, verbose_name='Текст')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
+    created_at = models.DateField(verbose_name='Дата комментария', auto_now_add=True)
+    order_number = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Номер заказа')
+
+    class Meta:
+        ordering = ('created_at', )
+
+    def __str__(self):
+        return f'Комментарий пользователя: {self.author}'
+
+

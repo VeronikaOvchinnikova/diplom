@@ -41,7 +41,7 @@ class OrderListSerializer(serializers.ModelSerializer):
                   'unit_place')
 
     # def validate_order(self, name):
-    #     names = get_objects_or_404(OrderList, name=name)
+    #     names = get_object_or_404(OrderList, name=name)
     #     if len(names) > 1:
     #         raise serializers.ValidationError(
     #             'Не может быть двух составов заказа с одним номером')

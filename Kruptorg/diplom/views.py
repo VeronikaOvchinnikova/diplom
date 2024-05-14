@@ -7,7 +7,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+from .permission import IsStorekeeper, IsManager
 
 from .models import Order, OrderList
 from api.serializers import OrderSerializer
@@ -22,18 +24,19 @@ class IndexListView(ListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return self.model.objects.filter(status__in=[
-            'Entered',
-            'Accepted',
-            'Assembly',
-            'Awaiting shipment',
-            'Is shipped',
-            'Changed',
-            'Has problem']).prefetch_related('items').all()
+            'Поступил',
+            'Принят',
+            'В сборке',
+            'Ожидает отгрузки',
+            'Отгружается',
+            'Изменен',
+            'Возникла проблема']).prefetch_related('items').all()
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         today = timezone.now().date()
         context['today_orders_count'] = self.model.objects.filter(date=today).count()
-        context['changes_order_count'] = self.model.objects.filter(status='Changed').count()
+        context['changes_order_count'] = self.model.objects.filter(status='Изменен').count()
+        context['isstorekeeper'] = self.request.user.groups.filter(name='Кладовщик').exists()
         return context
 
 
@@ -46,8 +49,8 @@ class ArchiveListView(ListView, LoginRequiredMixin):
 
     def get_queryset(self):
         return self.model.objects.filter(status__in=[
-            'Canceled',
-            'Shipped']).prefetch_related('items').all()
+            'Отменен',
+            'Отгружен']).prefetch_related('items').all()
 
 
 def page_not_found(request, exception):
@@ -81,18 +84,14 @@ def login_view(request):
     return render(request, template, {'form':form})
 
 
-# def login(request):
-#     template = 'pages/login.html'
-#     if request.method == 'POST':
-#         form = AuthenticationForm(request, data=request.POST)
-#         if form.is_valid():
-#             user = form.get_user()
-#             login(request, user)
-#             return redirect('diplom:main_page')
-#     else:
-#         form = AuthenticationForm()
-#     return render(request, template, {'form':form})
-
+def change_status(request):
+    if request.method == 'POST':
+        order_number = request.POST.get('order_number')
+        status = request.POST.get('status')
+        order = Order.objects.get(order_number=order_number)
+        order.status = status
+        order.save()
+        return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
 
 def logout_view(request):

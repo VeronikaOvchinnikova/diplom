@@ -4,6 +4,7 @@
 {% block title %}Заказы{% endblock %}
 {% block content %}
 <div class="container-fluid p-4" style="max-width:85%">
+    {% if request.resolver_match.url_name == 'main_page' %}
     <ul class="nav justify-content-end" style="margin-bottom:20px">
     <li class="nav-item">
         <div class="col m-1">К отгрузке сегодня: {{today_orders_count}}</div>
@@ -12,6 +13,7 @@
         <div class="col m-1">Измененные заказы: {{changes_order_count}}</div>
     </li>
     </ul>
+    {% endif %}
     <div class="row align-items-start">
         <div class="col"><b>№ Заказа</b>
             <button type="button" class="btn d-inline-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" >
@@ -117,7 +119,9 @@
 
 
 {% for order_item in orders %}
-<div class="card" style="background: #9EFEC3; margin-bottom:20px; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.5); border: 2px solid #157014;">
+<div class="card" style="background: {% if order_item.status == 'Изменен' %} #F3928C {% else %} #9EFEC3 {% endif %};
+                        margin-bottom:20px; box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.5); border: 2px solid {% if order_item.status == 'Изменен' %} #C23522 {% else %} #157014 {% endif %};">
+    <img src="{% static 'img/comment_img.svg' %}" style="position: absolute; top: 0; right: 0; width: 20px; height:20px; margin-right:1px">
     <div class="card-body m-1" >
         <div class="row align-items-start">
             <div class="col">
@@ -128,9 +132,47 @@
             </div>
             <div class="col">
                 {{order_item.status}}
-                <button>
-                   <img src="{% static 'img/change_status.png' %}" width="24" height="24">
-               </button>
+                {% if isstorekeeper %}
+                <form method="post" action="{% url 'diplom:change_status' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="order_number" value="{{ order_item.order_number }}">
+                    <button type="button" class="btn d-inline-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false" id="status_dropdown">
+                       <img src="{% static 'img/change_status.png' %}" width="24" height="24">
+                   </button>
+                    <ul data-bs-theme="light" class="dropdown-menu m-1 p-1" aria-labelledby="status_dropdown">
+                      <li>
+                          <button class="dropdown-item" type="submit" name="status" value="Принят">
+                              Принят
+                          </button>
+                      </li>
+                      <li>
+                          <button class="dropdown-item" type="submit" name="status" value="В сборке">
+                              В сборке
+                          </button>
+                      </li>
+                      <li>
+                          <button class="dropdown-item" type="submit" name="status" value="Ожидает отгрузки">
+                              Ожидает отгрузки
+                          </button>
+                      </li>
+                      <li>
+                          <button class="dropdown-item" type="submit" name="status" value="Отгружается">
+                              Отгружается
+                          </button>
+                      </li>
+                      <li>
+                          <button class="dropdown-item" type="submit" name="status" value="Возникла проблема">
+                              Возникла проблема
+                          </button>
+                      </li>
+                      <li>
+                          <button class="dropdown-item" type="submit" name="status" value="Изменен">
+                              Изменен
+                          </button>
+                      </li>
+                    </ul>
+                </form>
+                {% endif %}
             </div>
             <div class="col">
                 {{order_item.car_number}}
