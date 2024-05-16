@@ -11,6 +11,7 @@ from .serializers import OrderSerializer, OrderListSerializer
 
 
 class AddOrderView(viewsets.GenericViewSet):
+    serializer_class = OrderSerializer
     @action(detail=False, methods=['POST'], permission_classes=[AllowAny])
     def add_order(self, request):
         serializer = OrderSerializer(data=request.data)
@@ -28,6 +29,7 @@ class AddOrderView(viewsets.GenericViewSet):
 
 
 class AddOrderListView(viewsets.GenericViewSet):
+    serializer_class = OrderListSerializer
     @action(detail=False, methods=['POST'], permission_classes=[AllowAny])
     def add_order_list(self, request):
         order_number = request.data.get('order_number')

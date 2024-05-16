@@ -11,8 +11,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .permission import IsStorekeeper, IsManager
 
-from .models import Order, OrderList
+from .models import Order, OrderList, OrderStatusChangeHistory
 from api.serializers import OrderSerializer
+from .forms import CommentForm
 
 
 class IndexListView(ListView, LoginRequiredMixin):
@@ -37,6 +38,8 @@ class IndexListView(ListView, LoginRequiredMixin):
         context['today_orders_count'] = self.model.objects.filter(date=today).count()
         context['changes_order_count'] = self.model.objects.filter(status='Изменен').count()
         context['isstorekeeper'] = self.request.user.groups.filter(name='Кладовщик').exists()
+        context['commentform'] = CommentForm()
+
         return context
 
 
@@ -67,6 +70,18 @@ def csrf_failure(request, reason=''):
     template = 'pages/403_csrf.html'
     return render(request, template, status=403)
 
+def send_comment(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.order = request.POST.get('order_number')
+            comment.save()
+            return redirect('diplom:main_page')
+
+
+
 
 def login_view(request):
     template = 'pages/login.html'
@@ -89,8 +104,10 @@ def change_status(request):
         order_number = request.POST.get('order_number')
         status = request.POST.get('status')
         order = Order.objects.get(order_number=order_number)
+        old_status = order.status
         order.status = status
         order.save()
+        OrderStatusChangeHistory.objects.create(order=order, status=f'{old_status} -> {status}', status_changed_by=request.user)
         return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
 

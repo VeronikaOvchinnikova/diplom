@@ -72,29 +72,11 @@ class OrderList(models.Model):
         return self.name
 
 
-# class User (AbstractUser):
-#     login = models.CharField(max_length=50)
-#     password = models.CharField(max_length=50)
-#     name = models.CharField(max_length=100)
-#     role = models.CharField(max_length=50, choices=ROLE_CHOICES)
-#
-#     def __str__(self):
-#         return self.name
-#
-#     @property
-#     def is_storekeeper(self):
-#         return self.role == 'Storekeeper'
-#
-#     @property
-#     def is_manager(self):
-#         return self.role == 'Manager'
-
-
 class Comments (models.Model):
     text = models.TextField(max_length=500, verbose_name='Текст')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
     created_at = models.DateField(verbose_name='Дата комментария', auto_now_add=True)
-    order_number = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Номер заказа')
+    order_number = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Номер заказа', related_name='comments')
 
     class Meta:
         ordering = ('created_at', )
@@ -103,3 +85,15 @@ class Comments (models.Model):
         return f'Комментарий пользователя: {self.author}'
 
 
+class OrderStatusChangeHistory(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Заказ')
+    status = models.CharField(max_length=30, verbose_name='Статус')
+    status_changed_time = models.DateField(auto_now_add=True, verbose_name='Время смены статуса')
+    status_changed_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Кто сменил статус')
+
+    class Meta:
+        verbose_name = 'История заказа'
+        verbose_name_plural = 'История заказов'
+
+    def __str__(self):
+        return f'{self.status} сменен {self.status_changed_by}'
