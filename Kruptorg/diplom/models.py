@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
 
 ROLE_CHOICES = (
     ('Storekeeper', 'Кладовщик'),
@@ -87,7 +88,7 @@ class Comments (models.Model):
 
 class OrderStatusChangeHistory(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Заказ')
-    status = models.CharField(max_length=30, verbose_name='Статус')
+    status = models.CharField(max_length=50, verbose_name='Статус')
     status_changed_time = models.DateField(auto_now_add=True, verbose_name='Время смены статуса')
     status_changed_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Кто сменил статус')
 
@@ -97,3 +98,9 @@ class OrderStatusChangeHistory(models.Model):
 
     def __str__(self):
         return f'{self.status} сменен {self.status_changed_by}'
+
+# class UserToken(Token):
+#
+#     class Meta:
+#         proxy = True
+#         ordering = ('username', )

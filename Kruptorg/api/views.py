@@ -1,9 +1,10 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from rest_framework import viewsets, status
+from djoser.views import TokenCreateView
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 
 
 from diplom.models import Order, OrderList
@@ -12,7 +13,7 @@ from .serializers import OrderSerializer, OrderListSerializer
 
 class AddOrderView(viewsets.GenericViewSet):
     serializer_class = OrderSerializer
-    @action(detail=False, methods=['POST'], permission_classes=[AllowAny])
+    @action(detail=False, methods=['POST'], permission_classes=[IsAuthenticated])
     def add_order(self, request):
         serializer = OrderSerializer(data=request.data)
         if serializer.is_valid():
@@ -30,7 +31,7 @@ class AddOrderView(viewsets.GenericViewSet):
 
 class AddOrderListView(viewsets.GenericViewSet):
     serializer_class = OrderListSerializer
-    @action(detail=False, methods=['POST'], permission_classes=[AllowAny])
+    @action(detail=False, methods=['POST'], permission_classes=[IsAuthenticated])
     def add_order_list(self, request):
         order_number = request.data.get('order_number')
         if not order_number:
@@ -71,3 +72,5 @@ class AddOrderListView(viewsets.GenericViewSet):
                         status=status.HTTP_201_CREATED)
 
 
+# class TokenCreationView(TokenCreateView):
+#     pass

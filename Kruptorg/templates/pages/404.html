@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %} Ошибка 404 - страница не существует {% endblock %}
 {% block content %}
-<h1>Ошибка 404 - страница не существует</h1>
+<h1 style="text-align: center">Ошибка 404 - страница не существует</h1>
+<img src="{% static 'img/404_error.png' %}">
 {% endblock %}

@@ -10,13 +10,14 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .permission import IsStorekeeper, IsManager
+from django.contrib import messages
 
 from .models import Order, OrderList, OrderStatusChangeHistory
 from api.serializers import OrderSerializer
 from .forms import CommentForm
 
 
-class IndexListView(ListView, LoginRequiredMixin):
+class IndexListView(ListView):
     paginate_by = 10
     pk_url_kwarg = 'order_pk'
     model = Order
@@ -24,7 +25,8 @@ class IndexListView(ListView, LoginRequiredMixin):
     context_object_name = 'orders'
 
     def get_queryset(self):
-        return self.model.objects.filter(status__in=[
+        order = self.request.GET.get('order')
+        queryset = self.model.objects.filter(status__in=[
             'Поступил',
             'Принят',
             'В сборке',
@@ -32,15 +34,26 @@ class IndexListView(ListView, LoginRequiredMixin):
             'Отгружается',
             'Изменен',
             'Возникла проблема']).prefetch_related('items').all()
+        if order == 'date':
+            return queryset.order_by('date')
+        return queryset.all()
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         today = timezone.now().date()
         context['today_orders_count'] = self.model.objects.filter(date=today).count()
         context['changes_order_count'] = self.model.objects.filter(status='Изменен').count()
         context['isstorekeeper'] = self.request.user.groups.filter(name='Кладовщик').exists()
-        context['commentform'] = CommentForm()
-
         return context
+
+def send_comment(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        comment = form.save(commit=False)
+        comment.order = Order.objects.get(order_number=request.POST.get('order_number'))
+        comment.author = request.user
+        comment.save()
+        print('Все ок')
+        return redirect('diplom:main_page')
 
 
 class ArchiveListView(ListView, LoginRequiredMixin):
@@ -69,18 +82,6 @@ def server_error(request):
 def csrf_failure(request, reason=''):
     template = 'pages/403_csrf.html'
     return render(request, template, status=403)
-
-def send_comment(request):
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.author = request.user
-            comment.order = request.POST.get('order_number')
-            comment.save()
-            return redirect('diplom:main_page')
-
-
 
 
 def login_view(request):

@@ -1,5 +1,7 @@
 from django.contrib import admin
 from .models import Order, OrderList, OrderStatusChangeHistory, Comments
+from rest_framework.authtoken.models import Token
+
 
 
 admin.site.empty_value_display = 'не задано'
@@ -106,3 +108,20 @@ class CommentsInline(admin.TabularInline):
     model = Comments
 
 
+# def create_token(modeladmin, request, queryset):
+#     for user in queryset:
+#         Token.objects.get_or_create(user=user)
+#
+#
+# create_token.short_description = 'Создать токены для выбранных пользователь'
+#
+#
+# class UserAdmin (admin.ModelAdmin):
+#     actions = [create_token]
+#
+# class TokenAdmin (admin.ModelAdmin):
+#     list_display = ('key', 'user', 'created')
+#     fields = ('user', )
+#
+#
+# # admin.site.register(UserToken, TokenAdmin)
